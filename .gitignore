@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Reportes y capturas de Serenity (se regeneran con .\gradlew clean test)
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Configuración local de Claude Code (propia de cada equipo)
+.claude/settings.local.json
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
