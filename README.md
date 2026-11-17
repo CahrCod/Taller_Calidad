@@ -7,7 +7,7 @@ Universidad de Antioquia
 |---|---|
 | **Curso** | Calidad de Software |
 | **Docente** | Robinson Coronado García |
-| **Integrantes** | Carlos Andrey Henao Rincón — andrey.henao@udea.edu.co<br>Juan Manuel Velásquez Castañeda — manuel.alvarez2@udea.edu.co |
+| **Integrantes** | Carlos Andrey Henao Rincón — andrey.henao@udea.edu.co<br>Juan Manuel Velásquez Castañeda — manuel.alvarez2@udea.edu.co<br>Cristian Echeverry González — cristian.echeverry1@udea.edu.co |
 | **Punto del taller** | 5 — https://automationexercise.com/ |
 | **Reto** | Realizar una E2E que se registre, seleccione el producto y pueda pagar, validando hasta que la orden de compra sea confirmada |
 
@@ -189,7 +189,7 @@ cd $HOME\IdeaProjects
 ```
 
 ```powershell
-git clone https://github.com/<usuario>/Taller_Calidad.git
+git clone https://github.com/CahrCod/Taller_Calidad.git
 ```
 
 ### 4.2 Abrir en IntelliJ
@@ -555,6 +555,7 @@ argumento `-D...` va **entre comillas**:
 | `pages.automationUrl` | `https://automationexercise.com/` | URL base de la tienda |
 | `pause.millis` (en `build.gradle`) | `1500` por defecto | Duración de la pausa entre pasos |
 | `finalizedBy 'aggregate'` (en `build.gradle`) | — | Genera el reporte al terminar las pruebas |
+| `clean { delete 'target' }` (en `build.gradle`) | — | `clean` borra también el reporte anterior, para que se regenere completo con sus estilos (ver 9.3) |
 
 ---
 
@@ -581,6 +582,44 @@ En IntelliJ: clic derecho sobre `index.html` → **Open In → Browser → Chrom
 
 Si un escenario falla, la captura del paso fallido muestra exactamente qué tenía la pantalla en ese
 momento. Así diagnosticamos varios problemas de este proyecto (ver [sección 11](#11-solución-de-problemas)).
+
+### 9.3 Si el reporte se ve sin estilos (texto plano)
+
+**Síntoma:** `index.html` abre, pero se ve como texto plano: sin logo, sin colores y sin gráficos.
+
+**Causa:** los estilos y scripts del reporte (`bootstrap/`, `css/`, `scripts/`, `chartjs/`…) vienen dentro
+de la librería `serenity-report-resources` y Serenity los copia a `target/site/serenity` al generar el
+reporte. Cuando los copia, deja un archivo vacío llamado `serenity-resources` como **marca de "recursos
+ya copiados"**. Si una copia falla pero la marca queda creada, las ejecuciones siguientes ven la marca,
+no vuelven a copiar nada y el reporte sale sin estilos para siempre.
+
+**Corrección aplicada en el proyecto:** en `build.gradle`, la tarea `clean` borra también la carpeta
+`target/`. Así, cada `.\gradlew clean test` genera el reporte desde cero, con sus recursos:
+
+```groovy
+tasks.named('clean') {
+    delete 'target'
+}
+```
+
+**Si te vuelve a pasar:**
+
+```powershell
+.\gradlew clean test
+```
+
+O, sin repetir las pruebas, borra solo la marca y regenera el reporte:
+
+```powershell
+Remove-Item target\site\serenity\serenity-resources
+```
+
+```powershell
+.\gradlew aggregate
+```
+
+**Cómo saber que quedó bien:** dentro de `target/site/serenity/` deben existir las carpetas `bootstrap/`,
+`css/` y `scripts/`, y el reporte debe mostrar el logo de Serenity y la dona de resultados.
 
 ---
 
@@ -626,6 +665,7 @@ Errores reales que aparecieron durante el desarrollo y cómo se resolvieron.
 | `Deprecated Gradle features were used...` | Aviso de Gradle sobre funciones obsoletas | Es solo un **aviso**; se puede ignorar |
 | `SessionNotCreatedException` | No se pudo descargar ChromeDriver o Chrome está desactualizado | Revisar internet y actualizar Chrome |
 | `I remain on the signup page` falla por la URL | El sitio cambió la ruta tras el error de correo | Ajustar `"/signup"` por la URL real en `Register_user_StepDefinition` |
+| El reporte `index.html` se ve como texto plano, sin estilos ni gráficos | La copia de los recursos del reporte falló y quedó la marca vacía `serenity-resources`, que impide volver a copiarlos | `.\gradlew clean test` (ahora `clean` borra `target/`). Detalle en la [sección 9.3](#93-si-el-reporte-se-ve-sin-estilos-texto-plano) |
 | `-Dpause.millis=0` no tiene efecto o da error en PowerShell | PowerShell separa el argumento en el punto | Escribirlo entre comillas: `"-Dpause.millis=0"` |
 
 ---
@@ -838,7 +878,7 @@ git branch -M main
 ```
 
 ```powershell
-git remote add origin https://github.com/<usuario>/Taller_Calidad.git
+git remote add origin https://github.com/CahrCod/Taller_Calidad.git
 ```
 
 ```powershell

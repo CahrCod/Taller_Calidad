@@ -56,6 +56,12 @@ dependencies {
 
 }
 
+// El reporte de Serenity vive en target/: "clean" debe borrarlo para regenerarlo completo,
+// incluidos sus estilos (Serenity deja una marca "serenity-resources" y no vuelve a copiarlos si existe).
+tasks.named('clean') {
+    delete 'target'
+}
+
 tasks.named('test') {
     // Pausa visible entre pasos (ms). Para correr rápido: .\gradlew test -Dpause.millis=0
     systemProperty 'pause.millis', System.getProperty('pause.millis', '1500')
