@@ -7,7 +7,7 @@ Universidad de Antioquia
 |---|---|
 | **Curso** | Calidad de Software |
 | **Docente** | Robinson Coronado García |
-| **Integrantes** | Carlos Andrey Henao Rincón — andrey.henao@udea.edu.co<br>Juan Manuel Velásquez Castañeda — manuel.alvarez2@udea.edu.co<br>Cristian Echeverry González — cristian.echeverry1@udea.edu.co |
+| **Integrantes** | Carlos Andrey Henao Rincón — andrey.henao@udea.edu.co<br>Manuel Felipe Álvarez Rúa — manuel.alvarez2@udea.edu.co<br>Cristian Echeverry González — cristian.echeverry1@udea.edu.co |
 | **Punto del taller** | 5 — https://automationexercise.com/ |
 | **Reto** | Realizar una E2E que se registre, seleccione el producto y pueda pagar, validando hasta que la orden de compra sea confirmada |
 
